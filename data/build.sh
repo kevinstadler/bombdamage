@@ -1,2 +1,2 @@
 #!/bin/sh
-source get-data.sh && source create-tiles.sh
+source get-data.sh && source generate-tiles.sh

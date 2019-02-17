@@ -22,8 +22,13 @@ for ((col = 0; col < 8; col++ )); do
 			XE=`bc <<< "$XS + $DX"`
 			YS=`bc <<< "$Y0 + $DY * $row"`
 			YE=`bc <<< "$YS + $DY"`
-			echo "Downloading tile #$id, extent: $XS $YS $XE $YE"
+			echo "Requesting tile #$id, extent: $XS $YS $XE $YE"
 			wget -O "$id.$FORMAT" --quiet --show-progress "https://data.wien.gv.at/daten/wms?request=GetMap&version=1.1.1&width=$TILEWIDTH&height=$TILEHEIGHT&layers=BOMBENSCHADENOGD&styles=&format=image/$FORMAT&bbox=$XS,$YS,$XE,$YE&srs=$PROJ"
+			status=$?
+			if [ $status -ne 0 ]; then
+				echo "Couldn't download tile #$id"
+				rm "$id.FORMAT"
+			fi
 			echo
 		fi
 	done
