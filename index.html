@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Vienna WW2 bomb damage</title>
+    <base target="_blank">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135006739-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-135006739-1');
+    </script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">
+    <style>
+      body {
+        line-height: 135%;
+        margin: auto;
+        text-align: justify;
+        padding: 10px;
+      }
+      p {
+        max-width: 40em;
+        margin: 15px auto;
+      }
+      th {
+        width: 1.5em;
+      }
+      .map {
+        height: 600px;
+        width: 100%;
+        margin: auto;
+        padding: 10px;
+      }
+      #opacity-slider {
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <form class="form-inline">
+
+      <div>
+        <label>Base map:</label>
+        <select id="base-layer">
+          <option value="osm">OpenStreetMap</option>
+          <option value="bombenschadenogd">Bomb damage (historical map)</option>
+          <option value="genflwogd">Stadt Wien Bauflaechenwidmung</option>
+          <option value="genflwidmungogd">Stadt Wien Flaechenwidmung</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Overlay opacity:</label>
+        <input id="opacity-slider" type="range" min="0.2" max="1" value="0.7" step="0.01" />
+      </div>
+    </form>
+
+    <div>Legend: <table><tr><th id="red"></th><td>burnt out ("ausgebrannt")</td></tr><tr><th id="yellow"></th><td>completely destroyed</td></tr><tr><th id="blue"></th><td>heavy damage</td></tr><tr><th id="green"></th><td>light damage</td></tr></table></div>
+
+    <p>This map allows the inspection of data extracted from <a href="https://www.geschichtewiki.wien.gv.at/Kriegsschädenplan_(um_1946)">a set of maps documenting war damage to buildings in Vienna around 1946</a> as a semi-transparent overlay over various other modern and historical maps.</p>
+
+
+    <p align="right"><a href="https://github.com/kevinstadler/bombdamage#License"><img src="https://img.shields.io/badge/license-MIT-blue.svg" title="MIT license" alt="MIT license" /></a></p>
+    <script src="build/bundle.js">
+    </script>
+  </body>
+</html>
