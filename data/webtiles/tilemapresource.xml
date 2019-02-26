@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <TileMap version="1.0.0" tilemapservice="http://tms.osgeo.org/1.0.0">
-      <Title>merged.vrt</Title>
+      <Title>merged.tif</Title>
       <Abstract></Abstract>
       <SRS>EPSG:3857</SRS>
       <BoundingBox minx="16.25808161483183" miny="48.14667700282822" maxx="16.46304484226735" maxy="48.28342399102097"/>
