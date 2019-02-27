@@ -104,12 +104,9 @@ label.custom-select {
     content: none;
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-device-width: 600px) {
 	.flex-container-main {
 		flex-direction: column;
-	}
-	body {
-		background-color: black;
 	}
 }
 
