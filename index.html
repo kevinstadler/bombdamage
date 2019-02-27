@@ -26,7 +26,7 @@
         <div>
         <form class="form-inline">
             <div class="flex-container">
-                                <div>
+                <div>
                     <p>This map allows the inspection of data extracted from <a href="https://www.geschichtewiki.wien.gv.at/Kriegsschädenplan_(um_1946)">a set of maps documenting war damage to buildings in Vienna around 1946</a> as a semi-transparent overlay over various other modern and historical maps.
                     </p>
                     <p align="right"><a href="https://github.com/kevinstadler/bombdamage#License"><img src="https://img.shields.io/badge/license-MIT-blue.svg" title="MIT license" alt="MIT license" /></a></p>
@@ -35,15 +35,20 @@
                     <label class="custom-select">Base map:</br>
                     <select id="base-layer">
                         <option value="osm">OpenStreetMap</option>
-                        <option value="bombenschadenogd">Bomb damage (historical map)</option>
+                        <option value="bing">Bing satellite imagery</option>
                         <option value="genflwogd">Stadt Wien Bauflaechenwidmung</option>
                         <option value="genflwidmungogd">Stadt Wien Flaechenwidmung</option>
+                        <option value="bombenschadenogd">Bomb damage (historical map)</option>
                     </select>
                     </label>
                 </div>
                 <div>
                     <label>Overlay opacity:</label>
                     <input id="opacity-slider" type="range" min="0.2" max="1" value="0.7" step="0.01" />
+                </div>
+                <div>
+                    <input type="checkbox" id="lighten-overlay">
+                    <label>Highlight overlay</label>
                 </div>
                 <div><label>Legend:</label>
                     <table id="legend">

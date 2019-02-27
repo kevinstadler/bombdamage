@@ -1,0 +1,20 @@
+{
+  "name": "bombdamage",
+  "version": "1.0.0",
+  "description": "Vienna WW2 bomb damage web tiles interactive map",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify -g [ babelify --presets [ \"@babel/preset-env\" ] ] -g uglifyify --entry index.js > build/bundle.js"
+  },
+  "dependencies": {
+    "ol": "^5.1.3",
+    "proj4": "^2.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.56",
+    "@babel/preset-env": "^7.0.0-beta.56",
+    "babelify": "^9.0.0",
+    "browserify": "^16.2.2",
+    "uglifyify": "^5.0.1"
+  }
+}
