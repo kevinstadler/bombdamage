@@ -1,0 +1,112 @@
+body {
+	line-height: 135%;
+	margin: auto;
+	text-align: justify;
+	padding: 10px;
+}
+
+p {
+	max-width: 40em;
+}
+
+th {
+	width: 1.5em;
+}
+
+.map {
+	height: 600px;
+	width: 100%;
+	margin: auto;
+	padding: 10px;
+}
+
+#opacity-slider {
+	width: 150px;
+}
+
+.flex-container-main {
+	display: flex;
+	flex-direction: row;
+	margin: 10px;
+	justify-content: center;
+}
+
+.flex-container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	margin: 10px;
+}
+
+.flex-container>div {
+	flex-direction: column;
+	flex-wrap: wrap;
+	margin: 10px;
+	justify-content: center;
+}
+
+#legend td{
+	padding-left: 10px;
+}
+
+#opacity-slider {
+  -webkit-appearance: none;
+  width: 250px;
+  height: 10px;
+  border-radius: 5px;   
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+#opacity-slider:hover {
+  opacity: 1;
+}
+
+label.custom-select {
+    position: relative;
+    display: inline-block;
+
+}
+
+.custom-select select {
+    display: inline-block;
+    padding: 4px 3px 3px 5px;
+    margin-top: 5px;
+    font: inherit;
+    outline:none; /* remove focus ring from Webkit */
+    line-height: 1.2;
+    background: #d3d3d3;
+    color:black;
+    font-weight: normal;
+    border:0;
+    height: 20px;
+    width: 250px;
+}
+
+/* Select arrow styling */
+.custom-select:after {
+    content: "▼";
+    position: absolute;
+    top: 25px;
+    right: 3px;
+    bottom: 0;
+    font-size: 60%;
+    padding: 0 7px;
+    background: #d3d3d3;
+    color: white;
+    pointer-events: none;
+}
+
+.no-pointer-events .custom-select:after {
+    content: none;
+}
+
+@media (max-device-width: 600px) {
+	.flex-container-main {
+		flex-direction: column;
+	}
+}
+
