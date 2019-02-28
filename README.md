@@ -7,7 +7,7 @@ This submission for the ACDH virtual hackathon Open Data Day Vienna hack consist
 
 ## How to build the tiles
 
-The data retrieval, cleaning and tile generation process is documented in detail in the [data](data/) sub-directory.
+The data retrieval, cleaning and tile generation process is documented in detail in the [data/](data/) sub-directory.
 
 ## How to build the website
 

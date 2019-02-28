@@ -4,12 +4,12 @@ The Bash (UNIX shell) scripts in this directory retrieve the geo-referenced vers
 
 ## Underlying data
 
-The underlying data set is based on the [Kriegsschädenplan](https://www.geschichtewiki.wien.gv.at/Kriegsschädenplan_(um_1946)) documenting war damage to buildings in Vienna that was compiled [under unknown circumstances](https://www.geschichtewiki.wien.gv.at/Kriegssch%C3%A4denplan_(um_1946)#Entstehung) in (or shortly after) 1946. The original data consists of 48 sheets of the Generalstadtplan ([original digitalisation available from WAIS](https://www.wien.gv.at/actaproweb2/benutzung/archive.xhtml?id=Akt+++++00000651m08alt#Akt_____00000651m08alt)) that were colour-coded by hand to signify different types of damage. As can be seen from [the legend at the top of the sheets](https://www.wien.gv.at/actaproweb2/benutzung/image.xhtml?id=TwKSo67xQgUqg55JnK2TO+M0+8OkdD4Jp25sfgC2ACs1), the original data distinguished between six different types of damage (see also the interactive map of the data provided by [Stadt Wien Kulturgut](https://www.wien.gv.at/kulturportal/public/grafik.aspx?bookmark=nyltRs9CK0bADiJEbjW5QxwZlCQ-b)):
+The underlying data set is based on the [Kriegsschädenplan](https://www.geschichtewiki.wien.gv.at/Kriegsschädenplan_(um_1946)) documenting war damage to buildings in Vienna that was compiled [under unknown circumstances](https://www.geschichtewiki.wien.gv.at/Kriegssch%C3%A4denplan_(um_1946)#Entstehung) in (or shortly after) 1946. The original data consists of 48 sheets of the Generalstadtplan ([original digitalisation available from WAIS](https://www.wien.gv.at/actaproweb2/benutzung/archive.xhtml?id=Akt+++++00000651m08alt#Akt_____00000651m08alt)) that were colour-coded by hand to signify different types and degrees of damage. As can be seen from [the legend at the top of the sheets](https://www.wien.gv.at/actaproweb2/benutzung/image.xhtml?id=TwKSo67xQgUqg55JnK2TO+M0+8OkdD4Jp25sfgC2ACs1), the original data distinguished between six different types of damage (see also the interactive map of the data provided by [Stadt Wien Kulturgut](https://www.wien.gv.at/kulturportal/public/grafik.aspx?bookmark=nyltRs9CK0bADiJEbjW5QxwZlCQ-b)):
 
-* "Totalschaden" (yellow fill of affected areas/buildings)
-* "Ausgebrannt" (red fill of affected areas/buildings)
-* "Schwerer Schaden" (blue fill of affected areas/buildings)
-* "Leichter Schaden" (green fill of affected areas/buildings)
+* "Totalschaden" (yellow colouration of affected areas/buildings)
+* "Ausgebrannt" (red colouration of affected areas/buildings)
+* "Schwerer Schaden" (blue colouration of affected areas/buildings)
+* "Leichter Schaden" (green colouration of affected areas/buildings)
 * "Bombentreffer" (marked by light gray hatching)
 * "Beschuss" (marked by light green hatching)
 
@@ -17,8 +17,7 @@ Both the unclear definitions of the individual categories as well as the fact th
 
 ## Data processing approach
 
-The goal of the data cleaning process was to automatically extract all those areas of the maps which are clearly marked with one of the first four damage categories, i.e. those areas filled in with yellow, red, blue and green respectively. In order to automate the process, the raw maps first undergo pre-processing using the simple [ImageMagick](https://www.imagemagick.org) command line image processing tools: firstly, detailed annotations are "smudged" out using the [morphological Close operator](https://www.imagemagick.org/Usage/morphology/#close), which 
-Secondly, the saturation of the images is increased, which enhances the identifiability of the coloured annotations on top of the original monochrome map. Lastly, near-white areas are cleared, which removes the leftovers of smaller annotations created by the initial Close operation.
+The goal of the data cleaning process was to automatically extract all those areas of the maps which are clearly marked with one of the first four damage categories, i.e. those areas coloured in yellow, red, blue and green respectively. In order to automate the process, the raw maps first undergo pre-processing using the simple [ImageMagick](https://www.imagemagick.org) command line image processing tools: firstly, detailed annotations are "smudged" out using the [morphological Close operator](https://www.imagemagick.org/Usage/morphology/#close), which creates homogeneous areas of colouration. Secondly, the saturation of the images is increased, which enhances the identifiability of the coloured annotations on top of the original monochrome map. Lastly, near-white areas are removed, which clears the leftover artefacts of smaller annotations created by the initial Close operation.
 
 <img src="https://kevinstadler.github.io/bombdamage/build/preprocessing.png" align="center" alt="The original map and three stages of pre-processing: smudging using the morphological Close operator, enhancing of hue saturation, and removal of near-white areas" title="The original map and three stages of pre-processing" />
 
@@ -52,25 +51,35 @@ montage "raw/$TILE-red-debug.png" "raw/$TILE-yellow-debug.png" "raw/$TILE-green-
 montage "raw/$TILE-merged.png" "raw/$TILE.jpeg" -crop $CROP -tile 2x1 -geometry 370x294+10+10 -background lightgray ../build/merged.png
 -->
 
-## Lessons learned/TODOs
+## Lessons learned & ideas for future work
 
-* data probably incomplete (government buildings)
-* individual pages have different colours
+At the moment, the idealised target colours to be used for extracting the image masks for the four different types of damage, as well as the degree of fuzziness to be used during matching, are hand-coded in the `generate-tiles.sh` file, and the same values are used across the entire data set, no matter which of the 48 sheets of paper the data is from. This situation can be improved in several ways:
 
+Firstly, both the condition of the paper as well as the fading of the colouration (and presumably even the quality of the original colouration) vary a lot between the individual sheets ([see their juxtaposition in the digitalizations available from WAIS](https://www.wien.gv.at/actaproweb2/benutzung/archive.xhtml?id=Akt+++++00000651m08alt#Akt_____00000651m08alt)). Therefore, ideally different target colours and thresholds should be used for individual sheets.
+
+Secondly, rather than using target colours specified by hand, machine learning techniques could be used to automatically determine the most appropriate target colours for every type of damage per sheet. Some preliminary attempts using simple k-means clustering did not yield usable results, which is why hand-coded target colours are used in the code provided here, which work reasonably well. However, it is likely that the problem of correctly identifying all coloured areas simply cannot be solved using the simple fuzzy colour-matching approach here, especially given the diversity of the underlying data.
+
+Given the relatively manageable size of the data, the best way to convert the data set for future use would probably be to perform thorough manual annotations of all six types of damage in vector format. The advantage of this approach is that the identity of individual damaged buildings could also be manually cross-referenced against other (historical as well as modern) geodata sets.
+
+If such a project was undertaken, the unclear history of the original data set as well the question of ambiguous coding and the incompleteness of the data (in particular there seems to be no data for many government buildings or important industrial sites such as train stations) should be kept in mind.
 
 ## How to run & dependencies
 
-In order to run the scripts in this directory, the shell scripts will need to have access to the following binaries:
+To download the raw data and generate the tiles, simply execute the `build.sh` Bash script, which will in turn call the `get-data.sh` and `generate-tiles.sh` scripts. Dependencies for each of the scripts are listed below.
 
-* `build.sh` 
-* `tile-geometry.sh`
+The `tile-geometry.sh` script defines a number of configuration variables that control the download, resolution and original projection, which can all be adjusted.
 
-* `get-data.sh`
-  * `wget`
-* `generate-tiles.sh`
-  * `convert` (ImageMagick)
-  * `gdal_translate` and `gdalwarp` (GDAL)
-  * `gdal2tiles.py` (gdal2-python)
+### `get-data.sh`
+
+Requires the widespread `wget` command line download tool, as well as an internet connection to download the raw data from the City of Vienna's WMS service.
+
+### `generate-tiles.sh`
+
+This script performs the pre-processing, colour mask extraction as well as web tile generation and requires three dependencies:
+
+* the `convert` binary (part of the [ImageMagick](https://www.imagemagick.org) command-line image processing toolkit)
+* `gdal_translate` and `gdalwarp` binaries (part of the [GDAL](http://gdal.org) geodata processing toolkit)
+* `gdal2tiles.py` Python script for web tile generation (part of the GDAL2 python bindings, distributed with the `gdal2-python` package under most Linux distributions as well as Homebrew for MacOS)
 
 ## Storage and computation requirements
 
