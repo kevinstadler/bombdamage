@@ -92,7 +92,7 @@ var map = new Map({
     zoom: 8
   }),
   layers: [
-    layers['osm'],
+    layers['bing'],
     overlays['average']
   ]
 });
