@@ -17,8 +17,8 @@ Both the unclear definitions of the individual categories as well as the fact th
 
 ## Data processing approach
 
-The goal of the data cleaning process was to automatically extract all those areas of the maps which are clearly marked with one of the first four damage categories, i.e. those areas filled in with yellow, red, blue and green respectively. In order to automate the process, the raw maps first undergo pre-processing using the simple ImageMagick command line image processing tools: firstly, detailed annotations are "smudged" out using the morphological Close operator, which 
-Secondly, the saturation of the images is increased, which enhances the identifiability of the coloured annotations on top of the original black/white map. Lastly, near-white areas are cleared, which removes the leftovers of smaller annotations created by the initial Close operation.
+The goal of the data cleaning process was to automatically extract all those areas of the maps which are clearly marked with one of the first four damage categories, i.e. those areas filled in with yellow, red, blue and green respectively. In order to automate the process, the raw maps first undergo pre-processing using the simple [ImageMagick](https://www.imagemagick.org) command line image processing tools: firstly, detailed annotations are "smudged" out using the [morphological Close operator](https://www.imagemagick.org/Usage/morphology/#close), which 
+Secondly, the saturation of the images is increased, which enhances the identifiability of the coloured annotations on top of the original monochrome map. Lastly, near-white areas are cleared, which removes the leftovers of smaller annotations created by the initial Close operation.
 
 <img src="https://kevinstadler.github.io/bombdamage/build/preprocessing.png" align="center" alt="The original map and three stages of pre-processing: smudging using the morphological Close operator, enhancing of hue saturation, and removal of near-white areas" title="The original map and three stages of pre-processing" />
 
@@ -28,7 +28,7 @@ Based on the pre-processing output, the different coloured areas can be extracte
 
 These four image masks extracted from the original data can now be combined and coloured freely. For the sake of this project the choice was to re-apply a more homogeneous colouring according to the original damage categories, but choosing a spectrum of colours that is more distinguishable under a wide range of colour-blindness conditions. The resulting (transparent) damage mask is here shown next to the corresponding section of the original map.
 
-<img src="https://kevinstadler.github.io/bombdamage/build/merged.png" align="center" alt="The final transparent damage mask next to the corresponding section of the original map" title="The final transparent damage mask next to the corresponding section of the original map" />
+![The final transparent damage mask next to the corresponding section of the original map](https://kevinstadler.github.io/bombdamage/build/merged.png)
 
 Finally, the resulting georeferenced damage mask was converted into a set of map tiles which can be used as a semi-transparent overlay over any other online map resource. An interactive map making use of the tiles can be found at <https://kevinstadler.github.io/bombdamage/>
 
@@ -49,10 +49,14 @@ convert mod.png -fuzz 25% -fill white -opaque white raw.png
 montage "raw/$TILE.jpeg" close.png mod.png raw.png -crop $CROP -tile 4x1 -geometry 185x147+10+10 -background lightgray ../build/preprocessing.png
 montage "raw/$TILE-red-debug.png" "raw/$TILE-yellow-debug.png" "raw/$TILE-green-debug.png" "raw/$TILE-blue-debug.png" -crop $CROP -tile 4x1 -geometry 185x147+10+10 -background lightgray ../build/extraction.png
 
-montage "raw/$TILE-merged.png" "raw/$TILE.jpeg" -crop $CROP -tile 2x1 -geometry 185x147+10+10 -background lightgray ../build/merged.png
+montage "raw/$TILE-merged.png" "raw/$TILE.jpeg" -crop $CROP -tile 2x1 -geometry 370x294+10+10 -background lightgray ../build/merged.png
 -->
 
 ## Lessons learned/TODOs
+
+* data probably incomplete (government buildings)
+* individual pages have different colours
+
 
 ## How to run & dependencies
 
@@ -68,5 +72,10 @@ In order to run the scripts in this directory, the shell scripts will need to ha
   * `gdal_translate` and `gdalwarp` (GDAL)
   * `gdal2tiles.py` (gdal2-python)
 
-## Storage/Computation time
+## Storage and computation requirements
 
+Regarding the raw data download in JPEG format, at the default resolution roughly 262MB need to be downloaded from the City of Vienna's WMS service.
+
+The image processing commands required to extract the four damage masks take no longer than 3 hours on a modern consumer laptop, producing another 150MB of temporary files in PNG format.
+
+The resulting masks are finally merged into one 20MB GeoTIFF from which web tiles can be created. The entire set of transparent map tiles (zoom levels 10-17), stored in the [webtiles/](webtiles/) directory of this repository, are just over 5MB in PNG format.

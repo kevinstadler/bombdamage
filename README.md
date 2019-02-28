@@ -15,8 +15,10 @@ The interactive map is live at http://kevinstadler.github.io/bombdamage/
 
 In order to locally rebuild the web app to reflect changes made to the [index.js](index.js) javascript file you will need the `npm` and `browserify` binaries in your path. Simply run:
 
-> npm install
-> npm run build
+```
+npm install
+npm run build
+```
 
 ## License
 
