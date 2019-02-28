@@ -59,9 +59,9 @@ Firstly, both the condition of the paper as well as the fading of the colouratio
 
 Secondly, rather than using target colours specified by hand, machine learning techniques could be used to automatically determine the most appropriate target colours for every type of damage per sheet. Some preliminary attempts using simple k-means clustering did not yield usable results, which is why hand-coded target colours are used in the code provided here, which work reasonably well. However, it is likely that the problem of correctly identifying all coloured areas simply cannot be solved using the simple fuzzy colour-matching approach here, especially given the diversity of the underlying data.
 
-Given the relatively manageable size of the data, the best way to convert the data set for future use would probably be to perform thorough manual annotations of all six types of damage in vector format. The advantage of this approach is that the identity of individual damaged buildings could also be manually cross-referenced against other (historical as well as modern) geodata sets.
+Given the relatively manageable size of the data, the best way to convert the data set for future use would probably be to perform thorough manual annotations of all six types of damage, to be made available in vector format. The advantage of this approach is that the identity of individual damaged buildings could also be manually cross-referenced against other (historical as well as modern) geodata sets.
 
-If such a project was undertaken, the unclear history of the original data set as well the question of ambiguous coding and the incompleteness of the data (in particular there seems to be no data for many government buildings or important industrial sites such as train stations) should be kept in mind.
+If such a project was undertaken, the unclear history of the original data set as well the question of ambiguous coding and the incompleteness of the data (in particular there seems to be no data for many government buildings or important industrial sites such as train stations) should be kept in mind. The georeferencing of the individual sheets should also be readjusted, since in the georeferenced data as provided by the City of Vienna's WMS, not all sheets seem to be aligned perfectly.
 
 ## How to run & dependencies
 
