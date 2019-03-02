@@ -85,20 +85,6 @@ label.custom-select {
     width: 250px;
 }
 
-/* Select arrow styling */
-.custom-select:after {
-    content: "▼";
-    position: absolute;
-    top: 25px;
-    right: 3px;
-    bottom: 0;
-    font-size: 60%;
-    padding: 0 7px;
-    background: #d3d3d3;
-    color: white;
-    pointer-events: none;
-}
-
 .no-pointer-events .custom-select:after {
     content: none;
 }
