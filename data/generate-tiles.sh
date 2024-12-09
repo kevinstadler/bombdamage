@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 source tile-geometry.sh
 
@@ -14,7 +14,8 @@ for ((col = 0; col < 8; col++ )); do
 		tile=`printf "%02d" $(( 10 * $col + $row ))`
 		if [[ " ${TILES[@]} " =~ " $tile " ]]; then
 			RAW="$tile.$FORMAT"
-			echo "\nProcessing tile $tile"
+			echo
+			echo "Processing tile $tile"
 			if [ ! -f "$RAW" ]; then
 				echo "File not found: $RAW"
 				continue;
@@ -32,6 +33,7 @@ for ((col = 0; col < 8; col++ )); do
 			YS=`bc <<< "$Y0 + $DY * $row"`
 			YE=`bc <<< "$YS + $DY"`
 			gdal_translate -q -a_srs "$PROJ" -a_ullr "$XS" "$YE" "$XE" "$YS" -r near -of PNG "$tile.png" "$tile-merged.png" || exit 1
+			cp "$tile-merged.png.aux.xml" "$tile-leftovers.png.aux.xml"
 			rm "$tile-merged.png"
 
 			echo " - Extracting red" &&
@@ -70,12 +72,17 @@ for ((col = 0; col < 8; col++ )); do
 	done
 done
 
-echo "\nMerging tiles into master tile"
-targets=""
+echo
+echo "Merging tiles into master tile"
+mergedtargets=""
+leftovertargets=""
 for tile in "${TILES[@]}"; do
-	targets="$targets $tile-merged.png"
+	mergedtargets="$mergedtargets $tile-merged.png"
+	leftovertargets="$leftovertargets $tile-leftovers.png"
 done
-gdalwarp -dstalpha -r near -co COMPRESS=LZW -co TILED=YES -overwrite $targets "../merged.tif" || exit 1
+gdalwarp -dstalpha -r near -co COMPRESS=LZW -co TILED=YES -overwrite $mergedtargets "../merged.tif" || exit 1
+gdalwarp -dstalpha -r near -co COMPRESS=LZW -co TILED=YES -overwrite $leftovertargets "../leftover.tif" || exit 1
+exit
 
 cd ..
 
